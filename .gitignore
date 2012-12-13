@@ -12,4 +12,15 @@ dist
 /.classpath
 /.project
 /RUNNING_PID
-/.settings
+
+.DS_Store
+
+app/.DS_Store
+
+project/.DS_Store
+
+.DS_Store
+
+app/.DS_Store
+
+project/.DS_Store
