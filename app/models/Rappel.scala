@@ -7,6 +7,8 @@ import se.radley.plugin.salat._
 import org.joda.time.{Period, DateTime}
 import com.novus.salat.annotations._
 import com.novus.salat.global._
+import collection.immutable.Stream.Empty
+import actors.Actor
 
 
 case class Rappel(
@@ -29,14 +31,17 @@ object Rappel extends ModelCompanion[Rappel,ObjectId] {
 
   val dao = new SalatDAO[Rappel, ObjectId](collection = collection) {}
 
-  def listActiveRappelForUser(userId:ObjectId, searchDate:DateTime = new DateTime()):Seq[Rappel] = {
-    val equalUserId = "user_id" -> userId
+  def listActiveRappelForUser(userId:String, searchDate:DateTime = new DateTime()):Option[Seq[Rappel]] = {
+    val equalUserId = "user_id" -> new ObjectId(userId)
     val isNotDeleted = "deleted" -> None
     val isNotEnded = "endDate" $gt searchDate
     val isStarted = "startDate" $lte searchDate
 
     val where = isStarted ++ isNotEnded ++ equalUserId ++ isNotDeleted
 
-    dao.find(where).toSeq
+    val results = dao.find(where)
+
+    if (results.isEmpty) None
+    else Some(results.toSeq)
   }
 }

@@ -101,7 +101,7 @@ class ModelSpec extends Specification {
 
     "be retrieved by active rappels for one user" in {
       running(FakeApplication(additionalConfiguration = mongoTestDatabase())) {
-        val rappels = Rappel.listActiveRappelForUser(johnId,new DateTime("2012-11-14"))
+        val Some(rappels) = Rappel.listActiveRappelForUser(johnId.toString,new DateTime("2012-11-14"))
         rappels.size must equalTo(2)
         rappels.flatMap(r => r.id.toString) must equalTo(Seq(rappel1Id,rappel2Id).flatMap(x => x.toString))
       }

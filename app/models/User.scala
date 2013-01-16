@@ -55,4 +55,12 @@ object User extends ModelCompanion[User, ObjectId] {
    * @return user found
    */
   def findOneByEmail(email: String): Option[User] = dao.findOne(MongoDBObject("email" -> email))
+
+  /**
+   * Find user by email and password
+   * @param email the user email
+   * @param password the user password
+   * @return user found
+   */
+  def findOneByEmailAndPassword(email: String, password: String): Option[User] = dao.findOne(MongoDBObject("email" -> email, "password" -> password))
 }
